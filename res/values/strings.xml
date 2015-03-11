@@ -1,0 +1,27 @@
+<resources>
+
+    <string name="app_name">My Books</string>
+
+    <string name="search_a_book">Search A Book</string>
+
+    <string name="my_books">My Books</string>
+
+    <string name="welcome_to_my_books">Welcome to My Books</string>
+
+    <string name="home">Home</string>
+
+    <string name="book_name">Book Name</string>
+
+    <string name="search">Search</string>
+
+    <string name="save_book">Save Book</string>
+
+    <string name="remove_book">Remove Book</string>
+
+    <string name="author_name">Author Name</string>
+
+    <string name="book_cover">Book Cover</string>
+
+    <string name="share_book">Share Book</string>
+
+</resources>
