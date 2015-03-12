@@ -5,6 +5,7 @@ import android.app.Application;
 public class MyBooksApplication extends Application {
 	
 	public MyBooksApplication() {
+		 
 	}
 	
 }

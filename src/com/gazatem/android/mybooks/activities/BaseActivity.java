@@ -1,8 +1,6 @@
 package com.gazatem.android.mybooks.activities; 
-
 import com.gazatem.android.mybooks.R;
 import com.gazatem.android.mybooks.application.MyBooksApplication;
- 
 import android.app.Activity; 
 import android.content.Intent;
 import android.view.Menu; 
