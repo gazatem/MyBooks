@@ -32,7 +32,7 @@
         </activity>
         <activity android:name="com.gazatem.android.mybooks.activities.SearchResultBookActivity" >
         </activity>
-        <activity android:name="com.gazatem.android.activities.BookActivity" >
+        <activity android:name="com.gazatem.android.mybooks.activities.BookActivity" >
         </activity>
     </application>
 

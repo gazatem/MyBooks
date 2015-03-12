@@ -7,7 +7,9 @@ import com.gazatem.android.mybooks.utilities.ImageDownloader;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.text.Html;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -23,7 +25,10 @@ public class BookActivity extends BaseActivity {
 	Button removeBtn;
 	Button shareBtn;
 	int bookId = 0;
-
+	String imageUrl;
+	String title; 
+	String dbAuthorName;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -42,35 +47,35 @@ public class BookActivity extends BaseActivity {
 		if (crs != null) {
 			TextView bookTitle = (TextView) findViewById(R.id.bookTitle);
 			TextView authorNames = (TextView) findViewById(R.id.authorNames);
-			
+
 			int colmId = crs.getColumnIndexOrThrow("title");
-			String title = crs.getString(colmId);
+			title = crs.getString(colmId);
 			bookTitle.setText(title);
- 
+
 			int colmAuthorId = crs.getColumnIndexOrThrow("author");
-			String dbAuthorName = crs.getString(colmAuthorId);
+			dbAuthorName = crs.getString(colmAuthorId);
 			authorNames.setText(dbAuthorName);
-			
+
 			ImageView bookCover = (ImageView) findViewById(R.id.bookCover);
 
 			int coverColmId = crs.getColumnIndexOrThrow("cover");
 			String bookCoverId = crs.getString(coverColmId);
 			if (bookCoverId != null) {
 
-				String url = "http://covers.openlibrary.org/b/id/"
-						+ bookCoverId + "-M.jpg";
+				imageUrl = "http://covers.openlibrary.org/b/id/" + bookCoverId
+						+ "-M.jpg";
 
-				mDownloader = new ImageDownloader(url, bookCover, coverImage,
-						new ImageDownloader.ImageLoaderListener() {
+				mDownloader = new ImageDownloader(imageUrl, bookCover,
+						coverImage, new ImageDownloader.ImageLoaderListener() {
 
-							@Override 
+							@Override
 							public void onImageDownloaded(Bitmap bmp) {
 								// TODO Auto-generated method stub
 								BookActivity.coverImage = bmp;
-							}  
-						});  
+							}
+						});
 				mDownloader.execute();
-			} 
+			}
 
 			shareBtn = (Button) findViewById(R.id.shareBook);
 			removeBtn = (Button) findViewById(R.id.removeFromLibrary);
@@ -79,30 +84,38 @@ public class BookActivity extends BaseActivity {
 				public void onClick(View v) {
 
 					DBHelper dbHelper = new DBHelper(BookActivity.this);
-					dbHelper.removeBook(bookId); 
+					dbHelper.removeBook(bookId);
 					Toast.makeText(BookActivity.this,
 							"Book removed from library", Toast.LENGTH_LONG)
 							.show();
 					Intent i = new Intent(BookActivity.this,
 							BookListActivity.class);
 					startActivity(i);
-				}
-			});
-			 
-			
+				} 
+			});  
+ 
 			shareBtn.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
- 
-					Toast.makeText(BookActivity.this,
-							"Share Book removed from library", Toast.LENGTH_LONG)
-							.show();
-				 
+					 try {
+					        Intent intent1 = new Intent();
+					        intent1.setAction(Intent.ACTION_SEND);
+					        intent1.setType("text/plain");
+					        intent1.putExtra(Intent.EXTRA_SUBJECT,"I've added a new book to my books application: ");
+					        
+					        String shareText = "I've added a new book to my books application:";
+					        shareText  += title + "/" + dbAuthorName + " " + imageUrl;
+					        
+					        intent1.putExtra(Intent.EXTRA_TEXT, shareText);
+					        startActivity(Intent.createChooser(intent1, "Share via"));
+					        
+					    } catch (Exception e) {
+					        // If we failed (not native FB app installed), try share through SEND
+					       Toast.makeText(BookActivity.this, "You need to install any social media apps for sharing", Toast.LENGTH_SHORT).show();
+					    }	 
 				}
-			});			
-			
-			
-			
+			});
+
 		}
 	}
 }

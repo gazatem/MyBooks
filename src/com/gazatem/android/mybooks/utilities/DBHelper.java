@@ -6,7 +6,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 public class DBHelper extends SQLiteOpenHelper {
-
+ 
 	public static DBHelper instance = null;
 
 	private static final int DATABASE_VERSION = 1;
