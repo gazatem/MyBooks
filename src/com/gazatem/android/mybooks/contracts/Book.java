@@ -6,7 +6,6 @@ public class Book {
 	private String key;
 	public String[] covers; 
 	
-	
 	public String getTitle() {
 		return title;
 	}

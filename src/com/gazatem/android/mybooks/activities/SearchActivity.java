@@ -67,9 +67,7 @@ public class SearchActivity extends BaseActivity {
 				Intent i = new Intent(SearchActivity.this,
 						SearchResultBookActivity.class);
 				BookEntity entity = SearchActivity.books.get(position);
-				
-				Log.d("RST", "Search Click cover "+ entity.cover_i);
-				
+				i.putExtra("key", entity.key);
 				i.putExtra("editionKey", entity.edition_key);
 				i.putExtra("title", entity.title);
 				i.putExtra("author_names", entity.author_names);
@@ -78,7 +76,7 @@ public class SearchActivity extends BaseActivity {
 			} 
 		});
 	} 
- 
+  
 	class SearchAsyncTask extends AsyncTask<String, Void, Boolean> {
 
 		ProgressDialog prg = new ProgressDialog(SearchActivity.this);

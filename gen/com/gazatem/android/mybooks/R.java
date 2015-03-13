@@ -58,16 +58,16 @@ public final class R {
         public static final int bookTitle=0x7f080003;
         public static final int book_search_list=0x7f080002;
         public static final int homeMenuOption=0x7f08000c;
-        public static final int imgBook=0x7f080009;
+        public static final int imgBook=0x7f080008;
         public static final int listMenuOption=0x7f08000e;
         public static final int removeFromLibrary=0x7f080006;
-        public static final int save2Library=0x7f080008;
         public static final int searchMenuOption=0x7f08000d;
         public static final int searchQuery=0x7f080000;
         public static final int searchQueryButton=0x7f080001;
         public static final int shareBook=0x7f080007;
-        public static final int txtAuthor=0x7f08000b;
-        public static final int txtBookName=0x7f08000a;
+        public static final int subTitle=0x7f08000b;
+        public static final int txtAuthor=0x7f08000a;
+        public static final int txtBookName=0x7f080009;
     }
     public static final class layout {
         public static final int layout_search=0x7f030000;
