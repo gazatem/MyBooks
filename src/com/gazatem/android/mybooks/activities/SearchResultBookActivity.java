@@ -42,7 +42,7 @@ public class SearchResultBookActivity extends BaseActivity {
 	static Bitmap coverImage;
 	private ImageDownloader mDownloader;
 
-	@Override  
+	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
@@ -55,35 +55,31 @@ public class SearchResultBookActivity extends BaseActivity {
 			title = extras.getString("title");
 			cover_id = extras.getString("cover_i");
 			author_names = extras.getString("author_names");
-		} 
-		
+		}
+
 		TextView bookTitle = (TextView) findViewById(R.id.bookTitle);
 		bookTitle.setText(title);
 		TextView authorNames = (TextView) findViewById(R.id.authorNames);
 		authorNames.setText(author_names);
 		ImageView bookCover = (ImageView) findViewById(R.id.bookCover);
- 
 		searchlist = (ListView) findViewById(R.id.book_search_list);
 
-		
-/*		searchlist.setOnItemClickListener(new OnItemClickListener() {
+		searchlist.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
 				// TODO Auto-generated method stub
-				Intent i = new Intent(SearchActivity.this,
-						SearchResultBookActivity.class);
-				BookEntity entity = SearchActivity.books.get(position);
-				i.putExtra("key", entity.key);
-				i.putExtra("editionKey", entity.edition_key);
-				i.putExtra("title", entity.title);
-				i.putExtra("author_names", entity.author_names);
-				i.putExtra("cover_i", entity.cover_i);
+				Intent i = new Intent(SearchResultBookActivity.this,
+						BookActivity.class);
+				Edition entity = SearchResultBookActivity.editions
+						.get(position);
+
+				i.putExtra("edition_key", entity.getKey().replace("/books/", ""));
 				startActivity(i);
-			}  
-		});		*/
-		
+			}
+		});
+
 		if (cover_id != null) {
 			String url = "http://covers.openlibrary.org/b/id/" + cover_id
 					+ "-M.jpg";
@@ -101,44 +97,30 @@ public class SearchResultBookActivity extends BaseActivity {
 					});
 			mDownloader.execute();
 		}
-		
+
 		new SearchAsyncTask().execute(editionKeys);
-
-/*		save2LibraryButton = (Button) findViewById(R.id.save2Library);
-		save2LibraryButton.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) { 
-				// TODO Auto-generated method stub
-				DBHelper dbHelper = new DBHelper(SearchResultBookActivity.this);
-
-				// long id = dbHelper.addBook( new String[] { title,
-				// author_names, cover_id, editionKey });
-				Intent i = new Intent(SearchResultBookActivity.this,
-						BookListActivity.class);
-				startActivity(i);
-			}
-		});*/
 	}
-	
+
 	class SearchAsyncTask extends AsyncTask<String, Void, Boolean> {
 
 		ProgressDialog prg = new ProgressDialog(SearchResultBookActivity.this);
-		
+
 		@Override
 		protected void onPreExecute() {
 			// TODO Auto-generated method stub
 			super.onPreExecute();
-			
+
 			prg.setTitle("Searching editions of selected book!");
 			prg.show();
 		}
-		
+
 		@Override
 		protected void onPostExecute(Boolean result) {
 			// TODO Auto-generated method stub
 			super.onPostExecute(result);
-			searchlist.setAdapter(new EditionSearchAdapter(SearchResultBookActivity.this, editions, SearchResultBookActivity.coverImage)); 
+			searchlist.setAdapter(new EditionSearchAdapter(
+					SearchResultBookActivity.this, editions,
+					SearchResultBookActivity.coverImage));
 			prg.dismiss();
 		}
 
@@ -151,12 +133,11 @@ public class SearchResultBookActivity extends BaseActivity {
 					editions.add(FetchData.searchByEditionKey(item));
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
-					Log.d("RST", "Edition of book can not accessed : "+ item);
+					Log.d("RST", "Edition of book can not accessed : " + item);
 				}
-			} 			
+			}
 			return true;
 		}
-	}	
-	
-	
+	}
+
 }

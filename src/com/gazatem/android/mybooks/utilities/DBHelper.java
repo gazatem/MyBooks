@@ -1,12 +1,14 @@
 package com.gazatem.android.mybooks.utilities;
- import android.content.ContentValues;
+
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 public class DBHelper extends SQLiteOpenHelper {
- 
+
 	public static DBHelper instance = null;
 
 	private static final int DATABASE_VERSION = 1;
@@ -23,13 +25,14 @@ public class DBHelper extends SQLiteOpenHelper {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
 	}
 
-	public Boolean removeBook(int bookId) {
+	public Boolean removeBook(String edition_key) {
 		SQLiteDatabase db = this.getWritableDatabase();
-		db.delete(TABLE_NAME, COL_ID + " = " + bookId, null);
+		db.delete(TABLE_NAME, COL_EDITION_KEY + " = '" + edition_key + "'",
+				null);
 		db.close();
 		return true;
 	}
- 
+
 	public long addBook(String[] book) {
 		SQLiteDatabase db = this.getWritableDatabase();
 		ContentValues cv = new ContentValues();
@@ -38,7 +41,7 @@ public class DBHelper extends SQLiteOpenHelper {
 		cv.put(COL_TITLE, book[0]);
 		cv.put(COL_AUTHOR, book[1]);
 		cv.put(COL_COVER, book[2]);
-		
+
 		long id = db.insertWithOnConflict(TABLE_NAME, null, cv,
 				SQLiteDatabase.CONFLICT_ABORT);
 		db.close();
@@ -48,27 +51,33 @@ public class DBHelper extends SQLiteOpenHelper {
 	public Cursor getBooksFromDB() {
 		SQLiteDatabase db = this.getReadableDatabase();
 		Cursor cursor = db.query(TABLE_NAME, new String[] { COL_ID + " as _id",
-				COL_EDITION_KEY, COL_TITLE, COL_AUTHOR, COL_COVER }, null, null, null,
-				null, "title ASC");
+				COL_EDITION_KEY, COL_TITLE, COL_AUTHOR, COL_COVER }, null,
+				null, null, null, "title ASC");
 		if (cursor.getCount() > 0) {
 			return cursor;
 		} else {
 			return null;
 		}
-
 	}
 
-	public Cursor getBookFromDB(int bookId) {
-		SQLiteDatabase db = this.getWritableDatabase();
-		String where = COL_ID + "=" + bookId;
-		Cursor cursor = db.query(TABLE_NAME, new String[] { COL_ID,
-				COL_EDITION_KEY, COL_TITLE, COL_AUTHOR, COL_COVER }, where, null, null,
-				null, "title ASC");
-		if (cursor != null) {
-			cursor.moveToFirst();
+	public Cursor getBookFromDB(String edition_key) {
 
-			return cursor;
+		try {
+			SQLiteDatabase db = this.getWritableDatabase();
+			String where = COL_EDITION_KEY + "='" + edition_key + "' ";
+			Cursor cursor = db.query(TABLE_NAME, new String[] { COL_ID,
+					COL_EDITION_KEY, COL_TITLE, COL_AUTHOR, COL_COVER }, where,
+					null, null, null, "title ASC");
+			
+			if (cursor.getCount() > 0 || cursor != null) {
+				cursor.moveToFirst();
+				return cursor;
+			}
+		} catch (Exception ex) {
+			Log.d("RST", "This book is not avalaible in database: "
+					+ edition_key);
 		}
+
 		return null;
 	}
 
@@ -77,8 +86,9 @@ public class DBHelper extends SQLiteOpenHelper {
 		// TODO Auto-generated method stub
 		String CREATE_BOOKS_TABLE = "CREATE TABLE " + TABLE_NAME + "(" + COL_ID
 				+ " INTEGER PRIMARY KEY  AUTOINCREMENT  NOT NULL  UNIQUE ,"
-				+ COL_EDITION_KEY + " VARCHAR," + COL_TITLE + " VARCHAR, "+ COL_AUTHOR + " VARCHAR, "
-				+ COL_COVER + " VARCHAR, " + COL_NOTES + " TEXT)";
+				+ COL_EDITION_KEY + " VARCHAR," + COL_TITLE + " VARCHAR, "
+				+ COL_AUTHOR + " VARCHAR, " + COL_COVER + " VARCHAR, "
+				+ COL_NOTES + " TEXT)";
 		db.execSQL(CREATE_BOOKS_TABLE);
 
 	}
