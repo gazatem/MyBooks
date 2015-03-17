@@ -3,5 +3,20 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
- 
- </RelativeLayout>
+    <EditText
+        android:id="@+id/searchQuery"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="text" >
+    </EditText>
+
+    <Button
+        android:id="@+id/searchQueryButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/searchQuery"
+        android:text="@string/search" />
+
+</RelativeLayout>

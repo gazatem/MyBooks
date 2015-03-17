@@ -29,7 +29,7 @@ import com.gazatem.android.mybooks.utilities.EditionSearchAdapter;
 import com.gazatem.android.mybooks.utilities.FetchData;
 import com.gazatem.android.mybooks.utilities.ImageDownloader;
 
-public class SearchResultBookActivity extends BaseActivity {
+public class SearchEditionsOfBookActivity extends BaseActivity {
 
 	String[] editionKeys;
 	String key;
@@ -70,9 +70,9 @@ public class SearchResultBookActivity extends BaseActivity {
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
 				// TODO Auto-generated method stub
-				Intent i = new Intent(SearchResultBookActivity.this,
+				Intent i = new Intent(SearchEditionsOfBookActivity.this,
 						BookActivity.class);
-				Edition entity = SearchResultBookActivity.editions
+				Edition entity = SearchEditionsOfBookActivity.editions
 						.get(position);
 
 				i.putExtra("edition_key", entity.getKey().replace("/books/", ""));
@@ -91,7 +91,7 @@ public class SearchResultBookActivity extends BaseActivity {
 						public void onImageDownloaded(Bitmap bmp) {
 							// TODO Auto-generated method stub
 							if (bmp != null) {
-								SearchResultBookActivity.coverImage = bmp;
+								SearchEditionsOfBookActivity.coverImage = bmp;
 							}
 						}
 					});
@@ -103,7 +103,7 @@ public class SearchResultBookActivity extends BaseActivity {
 
 	class SearchAsyncTask extends AsyncTask<String, Void, Boolean> {
 
-		ProgressDialog prg = new ProgressDialog(SearchResultBookActivity.this);
+		ProgressDialog prg = new ProgressDialog(SearchEditionsOfBookActivity.this);
 
 		@Override
 		protected void onPreExecute() {
@@ -119,8 +119,8 @@ public class SearchResultBookActivity extends BaseActivity {
 			// TODO Auto-generated method stub
 			super.onPostExecute(result);
 			searchlist.setAdapter(new EditionSearchAdapter(
-					SearchResultBookActivity.this, editions,
-					SearchResultBookActivity.coverImage));
+					SearchEditionsOfBookActivity.this, editions,
+					SearchEditionsOfBookActivity.coverImage));
 			prg.dismiss();
 		}
 

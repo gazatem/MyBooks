@@ -4,30 +4,14 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
- 
-    <EditText
-        android:id="@+id/searchQuery"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="text" >
-    </EditText>
-
-    <Button
-        android:id="@+id/searchQueryButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_below="@id/searchQuery"
-        android:text="@string/search" />
 
     <ListView
         android:id="@+id/book_search_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/searchQueryButton"
+        
         android:layout_margin="5dp"
         android:background="#9FFF" >
     </ListView>
 
-</RelativeLayout>
+</RelativeLayout> 

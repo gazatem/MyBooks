@@ -20,11 +20,8 @@ public class BaseActivity extends Activity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		// TODO Auto-generated method stub
 
-		if (item.getItemId() == R.id.homeMenuOption) {
+		if (item.getItemId() == R.id.searchMenuOption) {
 			Intent i = new Intent(BaseActivity.this, MainActivity.class);
-			startActivity(i);
-		} else if (item.getItemId() == R.id.searchMenuOption) {
-			Intent i = new Intent(BaseActivity.this, SearchActivity.class);
 			startActivity(i);
 		} else if (item.getItemId() == R.id.listMenuOption) {
 			Intent i = new Intent(BaseActivity.this, BookListActivity.class);

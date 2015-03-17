@@ -9,6 +9,7 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 
+import com.gazatem.android.mybooks.contracts.Author;
 import com.gazatem.android.mybooks.contracts.Book;
 import com.gazatem.android.mybooks.contracts.BookEntity;
 import com.gazatem.android.mybooks.contracts.Edition;
@@ -57,7 +58,16 @@ public class FetchData {
 		Edition entity = gson.fromJson(responseString, Edition.class);
 		return entity;
 	}
-
+	
+	public static Author searchByAuthorKey(String editionKey) throws IOException {
+		String sourceUrl = "https://openlibrary.org/authors/" + editionKey
+				+ ".json";
+		String responseString = fetchJsonFromUrl(sourceUrl);
+		Gson gson = new Gson();
+		Author author = gson.fromJson(responseString, Author.class);
+		return author; 
+	}	
+	
 	public Book getWorkDetail(String searchQuery) throws IOException {
 
 		String sourceUrl = "https://openlibrary.org" + searchQuery + ".json";

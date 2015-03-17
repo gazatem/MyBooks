@@ -1,5 +1,7 @@
 package com.gazatem.android.mybooks.contracts;
 
+import java.util.ArrayList;
+
 public class Edition {
 
 	private String title;
@@ -9,6 +11,7 @@ public class Edition {
 	private String subtitle;
 	public Boolean isSaved;
 	private String[] covers;
+	public ArrayList<Author> authors;
 
 	public String getTitle() {
 		return title;
@@ -35,10 +38,10 @@ public class Edition {
 	}
 
 	public String getCover() {
-		if (covers.length > 0) {
+		if (covers != null && covers.length > 0) {
 			return covers[0];
 		}
-		return null;
+		return "";
 	}
 
 	public String getSubtitle() {

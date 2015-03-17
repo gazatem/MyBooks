@@ -1,4 +1,5 @@
 package com.gazatem.android.mybooks.activities;
+ 
 
 import com.gazatem.android.mybooks.R;
 import com.gazatem.android.mybooks.contracts.Edition;
@@ -57,21 +58,20 @@ public class BookActivity extends BaseActivity {
 
 		data = new BookData(BookActivity.this);
 		edition = data.getBook(edition_key);
-
+		String author = data.getAuthors();
+		authorNames.setText(author);
 		boolean isSaved = data.isSavedBook();
-		Log.d("RST", " isSaved " + isSaved);
 
-		
 		if (isSaved == true) {
 			save2LibraryBtn.setVisibility(View.GONE);
 		} else {
-			removeBtn.setVisibility(View.GONE);		
+			removeBtn.setVisibility(View.GONE);
 		}
 
 		bookTitle.setText(edition.getTitle());
 		bookCoverId = edition.getCover();
 
-		if (bookCoverId != null) {
+		if (!bookCoverId.equals("")) {
 			imageUrl = "http://covers.openlibrary.org/b/id/" + bookCoverId
 					+ "-M.jpg";
 
