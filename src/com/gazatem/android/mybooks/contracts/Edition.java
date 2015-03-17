@@ -7,8 +7,9 @@ public class Edition {
 	private String key;
 	private String cover;
 	private String subtitle;
-	
-	
+	public Boolean isSaved;
+	private String[] covers;
+
 	public String getTitle() {
 		return title;
 	}
@@ -34,11 +35,10 @@ public class Edition {
 	}
 
 	public String getCover() {
-		return cover;
-	}
-
-	public void setCover(String cover) {
-		this.cover = cover;
+		if (covers.length > 0) {
+			return covers[0];
+		}
+		return null;
 	}
 
 	public String getSubtitle() {
@@ -47,6 +47,14 @@ public class Edition {
 
 	public void setSubtitle(String subtitle) {
 		this.subtitle = subtitle;
+	}
+
+	public String[] getCovers() {
+		return covers;
+	}
+
+	public void setCovers(String[] covers) {
+		this.covers = covers;
 	}
 
 }

@@ -4,30 +4,16 @@ public class Book {
 	private String title;
 	private String author;
 	private String key;
-	public String[] covers; 
-	
+	private String cover;
+	private String[] covers;
+	private String[] authors;
+
 	public String getTitle() {
 		return title;
 	}
 
 	public void setTitle(String title) {
 		this.title = title;
-	}
-
-	public String getCover() {
-		if (covers != null && covers.length > 0) {
-			return covers[0];
-		}
-		return null;
-	}
- 
-
-	public String getKey() {
-		return key;
-	}
-
-	public void setKey(String key) {
-		this.key = key;
 	}
 
 	public String getAuthor() {
@@ -38,6 +24,36 @@ public class Book {
 		this.author = author;
 	}
 
- 
+	public String getKey() {
+		return key;
+	}
+
+	public void setKey(String key) {
+		this.key = key;
+	}
+
+	public String getCover() {
+		return cover;
+	}
+
+	public void setCover(String cover) {
+		this.cover = cover;
+	}
+
+	public String[] getCovers() {
+		return covers;
+	}
+
+	public void setCovers(String[] covers) {
+		this.covers = covers;
+	}
+
+	public String[] getAuthors() {
+		return authors;
+	}
+
+	public void setAuthors(String[] authors) {
+		this.authors = authors;
+	}
 
 }

@@ -1,23 +1,14 @@
 package com.gazatem.android.mybooks.activities;
 
-import java.io.IOException;
-
 import com.gazatem.android.mybooks.R;
-import com.gazatem.android.mybooks.activities.SearchResultBookActivity.SearchAsyncTask;
 import com.gazatem.android.mybooks.contracts.Edition;
-import com.gazatem.android.mybooks.utilities.DBHelper;
-import com.gazatem.android.mybooks.utilities.EditionSearchAdapter;
-import com.gazatem.android.mybooks.utilities.FetchData;
+import com.gazatem.android.mybooks.data.BookData;
 import com.gazatem.android.mybooks.utilities.ImageDownloader;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.text.Html;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -33,43 +24,54 @@ public class BookActivity extends BaseActivity {
 	private ImageDownloader mDownloader;
 	Button removeBtn;
 	Button shareBtn;
-	String edition_key;
+	static String edition_key;
 	String imageUrl;
 	String title;
 	String dbAuthorName;
 	String bookCoverId;
- 
+	Button save2LibraryBtn;
+
+	TextView bookTitle;
+	TextView authorNames;
+	ImageView bookCover;
+	BookData data;
+	Edition edition;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.library_book_detail);
-
+		shareBtn = (Button) findViewById(R.id.shareBook);
+		removeBtn = (Button) findViewById(R.id.removeFromLibrary);
+		save2LibraryBtn = (Button) findViewById(R.id.save2Library);
 		Bundle extras = getIntent().getExtras();
 
 		if (extras != null) {
 			edition_key = extras.getString("edition_key");
 		}
 
-		DBHelper dbHelper = new DBHelper(this);
-		crs = dbHelper.getBookFromDB(edition_key);
+		bookTitle = (TextView) findViewById(R.id.bookTitle);
+		authorNames = (TextView) findViewById(R.id.authorNames);
+		bookCover = (ImageView) findViewById(R.id.bookCover);
 
-		TextView bookTitle = (TextView) findViewById(R.id.bookTitle);
-		TextView authorNames = (TextView) findViewById(R.id.authorNames);
-		ImageView bookCover = (ImageView) findViewById(R.id.bookCover);
+		data = new BookData(BookActivity.this);
+		edition = data.getBook(edition_key);
 
-		if (crs.getCount() > 0 || crs != null) {
-			title = crs.getString(crs.getColumnIndex("title"));
-			dbAuthorName = crs.getString(crs.getColumnIndex("author"));
-			bookCoverId = crs.getString(crs.getColumnIndex("cover"));
+		boolean isSaved = data.isSavedBook();
+		Log.d("RST", " isSaved " + isSaved);
+
+		
+		if (isSaved == true) {
+			save2LibraryBtn.setVisibility(View.GONE);
 		} else {
-			new SearchAsyncTask().execute(edition_key);
+			removeBtn.setVisibility(View.GONE);		
 		}
-		bookTitle.setText(title);
-		authorNames.setText(dbAuthorName);
+
+		bookTitle.setText(edition.getTitle());
+		bookCoverId = edition.getCover();
 
 		if (bookCoverId != null) {
-
 			imageUrl = "http://covers.openlibrary.org/b/id/" + bookCoverId
 					+ "-M.jpg";
 
@@ -82,21 +84,47 @@ public class BookActivity extends BaseActivity {
 							BookActivity.coverImage = bmp;
 						}
 					});
+
 			mDownloader.execute();
 		}
 
-		shareBtn = (Button) findViewById(R.id.shareBook);
-		removeBtn = (Button) findViewById(R.id.removeFromLibrary);
+		save2LibraryBtn.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Boolean rst = data.saveBook2Library(edition.getKey(),
+						edition.getTitle(), edition.getCover());
+				if (rst) {
+					Toast.makeText(BookActivity.this,
+							"Book has saved to your library!",
+							Toast.LENGTH_SHORT).show();
+					save2LibraryBtn.setVisibility(View.GONE);
+					removeBtn.setVisibility(View.VISIBLE);
+				} else {
+					Toast.makeText(BookActivity.this, "Book can not be saved!",
+							Toast.LENGTH_SHORT).show();
+				}
+			}
+		});
+
 		removeBtn.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 
-				DBHelper dbHelper = new DBHelper(BookActivity.this);
-				dbHelper.removeBook(edition_key);
-				Toast.makeText(BookActivity.this, "Book removed from library",
-						Toast.LENGTH_LONG).show();
-				Intent i = new Intent(BookActivity.this, BookListActivity.class);
-				startActivity(i);
+				Boolean rst = data
+						.removeBookFromLibrary(BookActivity.edition_key);
+				if (rst) {
+					Toast.makeText(BookActivity.this,
+							"Book has removed from your library!",
+							Toast.LENGTH_SHORT).show();
+					removeBtn.setVisibility(View.GONE);
+					save2LibraryBtn.setVisibility(View.VISIBLE);
+				} else {
+					Toast.makeText(BookActivity.this,
+							"Book can not be removed!", Toast.LENGTH_SHORT)
+							.show();
+				}
 			}
 		});
 
@@ -112,7 +140,6 @@ public class BookActivity extends BaseActivity {
 
 					String shareText = "I've added a new book to my books application:";
 					shareText += title + "/" + dbAuthorName + " " + imageUrl;
-
 					intent1.putExtra(Intent.EXTRA_TEXT, shareText);
 					startActivity(Intent.createChooser(intent1, "Share via"));
 
@@ -127,44 +154,6 @@ public class BookActivity extends BaseActivity {
 			}
 		});
 
-	}
-
-	class SearchAsyncTask extends AsyncTask<String, Void, Boolean> {
-		Edition edition;
-		ProgressDialog prg = new ProgressDialog(BookActivity.this);
-
-		@Override
-		protected void onPreExecute() {
-			// TODO Auto-generated method stub
-			super.onPreExecute();
-
-			prg.setTitle("Searching editions of selected book!");
-			prg.show();
-		}
-
-		@Override
-		protected void onPostExecute(Boolean result) { 
-			// TODO Auto-generated method stub
-			super.onPostExecute(result);
-			// BookActivity.bookTitle resu
-			// authorNames.setText(dbAuthorName);
-			title = edition.getTitle();
-			prg.dismiss();
-		}
-
-		@Override
-		protected Boolean doInBackground(String... editionKeys) {
-			// TODO Auto-generated method stub
-			try {
-				edition =  FetchData.searchByEditionKey(editionKeys[0]);
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-				return false;
-			}
-			return true;
- 
-		}
 	}
 
 }

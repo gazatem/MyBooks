@@ -37,7 +37,7 @@ public class SearchResultBookActivity extends BaseActivity {
 	String cover_id;
 	String author_names;
 	ListView searchlist;
-	Button save2LibraryButton;
+	
 	static ArrayList<Edition> editions = new ArrayList<Edition>();
 	static Bitmap coverImage;
 	private ImageDownloader mDownloader;
@@ -77,7 +77,7 @@ public class SearchResultBookActivity extends BaseActivity {
 
 				i.putExtra("edition_key", entity.getKey().replace("/books/", ""));
 				startActivity(i);
-			}
+			} 
 		});
 
 		if (cover_id != null) {
@@ -114,7 +114,7 @@ public class SearchResultBookActivity extends BaseActivity {
 			prg.show();
 		}
 
-		@Override
+		@Override 
 		protected void onPostExecute(Boolean result) {
 			// TODO Auto-generated method stub
 			super.onPostExecute(result);

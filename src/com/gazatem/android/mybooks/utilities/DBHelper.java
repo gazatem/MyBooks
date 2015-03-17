@@ -31,17 +31,16 @@ public class DBHelper extends SQLiteOpenHelper {
 				null);
 		db.close();
 		return true;
-	}
+	} 
 
-	public long addBook(String[] book) {
+	public long saveBook2Library(String edition_key, String title, String cover) {
+		
+		edition_key = edition_key.replace("/books/", "");
 		SQLiteDatabase db = this.getWritableDatabase();
 		ContentValues cv = new ContentValues();
-
-		cv.put(COL_EDITION_KEY, book[3]);
-		cv.put(COL_TITLE, book[0]);
-		cv.put(COL_AUTHOR, book[1]);
-		cv.put(COL_COVER, book[2]);
-
+		cv.put(COL_EDITION_KEY, edition_key);
+		cv.put(COL_TITLE, title);
+		cv.put(COL_COVER, cover);
 		long id = db.insertWithOnConflict(TABLE_NAME, null, cv,
 				SQLiteDatabase.CONFLICT_ABORT);
 		db.close();
@@ -65,11 +64,12 @@ public class DBHelper extends SQLiteOpenHelper {
 		try {
 			SQLiteDatabase db = this.getWritableDatabase();
 			String where = COL_EDITION_KEY + "='" + edition_key + "' ";
+
 			Cursor cursor = db.query(TABLE_NAME, new String[] { COL_ID,
 					COL_EDITION_KEY, COL_TITLE, COL_AUTHOR, COL_COVER }, where,
-					null, null, null, "title ASC");
-			
-			if (cursor.getCount() > 0 || cursor != null) {
+					null, null, null, null);
+
+			if (null != cursor && cursor.getCount() > 0) {
 				cursor.moveToFirst();
 				return cursor;
 			}
@@ -80,6 +80,32 @@ public class DBHelper extends SQLiteOpenHelper {
 
 		return null;
 	}
+	
+
+	public boolean isSavedBook(String edition_key) {
+		
+		edition_key = edition_key.replace("/books/", "");
+		
+		try {
+			SQLiteDatabase db = this.getWritableDatabase();
+			String where = COL_EDITION_KEY + "='" + edition_key + "' ";
+
+			Cursor cursor = db.query(TABLE_NAME, new String[] { COL_ID,
+					COL_EDITION_KEY, COL_TITLE, COL_AUTHOR, COL_COVER }, where,
+					null, null, null, null);
+			 
+				if (cursor.getCount() > 0){
+					return true;
+				}else{
+					return false;
+				}
+		} catch (Exception ex) {
+			Log.d("RST", "This book is not avalaible in database: "
+					+ edition_key);
+			return false;
+		}
+	}	
+	
 
 	@Override
 	public void onCreate(SQLiteDatabase db) {

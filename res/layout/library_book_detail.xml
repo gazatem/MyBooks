@@ -51,6 +51,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/remove_book" />
+        
+        <Button
+            android:layout_weight="1"
+            android:id="@+id/save2Library"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/save_book" />        
 
         <Button
             android:layout_weight="1"

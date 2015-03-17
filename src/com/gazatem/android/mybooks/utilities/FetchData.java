@@ -54,8 +54,8 @@ public class FetchData {
 				+ ".json";
 		String responseString = fetchJsonFromUrl(sourceUrl);
 		Gson gson = new Gson();
-		//Edition entity = gson.fromJson(responseString, Edition.class);
-		return gson.fromJson(responseString, Edition.class);
+		Edition entity = gson.fromJson(responseString, Edition.class);
+		return entity;
 	}
 
 	public Book getWorkDetail(String searchQuery) throws IOException {

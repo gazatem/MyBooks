@@ -66,9 +66,9 @@ public class BookListActivity extends BaseActivity {
 					int position, long id) {
 				// TODO Auto-generated method stub
 				Intent i = new Intent(BookListActivity.this, BookActivity.class);
-				int bookId = crs.getColumnIndexOrThrow("_id");
-				int _bookId = crs.getInt(bookId);
-				i.putExtra("bookId", _bookId);
+				String edition_key = crs.getString(crs.getColumnIndex("edition_key"));
+
+				i.putExtra("edition_key", edition_key);
 				startActivity(i);
 			}
 		});
