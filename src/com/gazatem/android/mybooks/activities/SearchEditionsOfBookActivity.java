@@ -10,9 +10,9 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.view.View.OnClickListener;
+
 import android.widget.AdapterView;
-import android.widget.Button;
+
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -20,11 +20,7 @@ import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 
 import com.gazatem.android.mybooks.R;
-import com.gazatem.android.mybooks.activities.SearchActivity.SearchAsyncTask;
-import com.gazatem.android.mybooks.contracts.BookEntity;
 import com.gazatem.android.mybooks.contracts.Edition;
-import com.gazatem.android.mybooks.utilities.BookSearchAdapter;
-import com.gazatem.android.mybooks.utilities.DBHelper;
 import com.gazatem.android.mybooks.utilities.EditionSearchAdapter;
 import com.gazatem.android.mybooks.utilities.FetchData;
 import com.gazatem.android.mybooks.utilities.ImageDownloader;
@@ -38,11 +34,11 @@ public class SearchEditionsOfBookActivity extends BaseActivity {
 	String author_names;
 	ListView searchlist;
 	
-	static ArrayList<Edition> editions = new ArrayList<Edition>();
-	static Bitmap coverImage;
+	ArrayList<Edition> editions = new ArrayList<Edition>();
+	Bitmap coverImage;
 	private ImageDownloader mDownloader;
 
-	@Override
+	@Override 
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
@@ -72,8 +68,7 @@ public class SearchEditionsOfBookActivity extends BaseActivity {
 				// TODO Auto-generated method stub
 				Intent i = new Intent(SearchEditionsOfBookActivity.this,
 						BookActivity.class);
-				Edition entity = SearchEditionsOfBookActivity.editions
-						.get(position);
+				Edition entity = editions.get(position);
 
 				i.putExtra("edition_key", entity.getKey().replace("/books/", ""));
 				startActivity(i);
@@ -91,7 +86,7 @@ public class SearchEditionsOfBookActivity extends BaseActivity {
 						public void onImageDownloaded(Bitmap bmp) {
 							// TODO Auto-generated method stub
 							if (bmp != null) {
-								SearchEditionsOfBookActivity.coverImage = bmp;
+								coverImage = bmp;
 							}
 						}
 					});
@@ -113,14 +108,13 @@ public class SearchEditionsOfBookActivity extends BaseActivity {
 			prg.setTitle("Searching editions of selected book!");
 			prg.show();
 		}
-
+   
 		@Override 
 		protected void onPostExecute(Boolean result) {
 			// TODO Auto-generated method stub
 			super.onPostExecute(result);
 			searchlist.setAdapter(new EditionSearchAdapter(
-					SearchEditionsOfBookActivity.this, editions,
-					SearchEditionsOfBookActivity.coverImage));
+					SearchEditionsOfBookActivity.this, editions, coverImage));
 			prg.dismiss();
 		}
 
@@ -135,9 +129,8 @@ public class SearchEditionsOfBookActivity extends BaseActivity {
 					// TODO Auto-generated catch block
 					Log.d("RST", "Edition of book can not accessed : " + item);
 				}
-			}
+			} 
 			return true;
 		}
 	}
-
 }

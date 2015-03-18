@@ -33,15 +33,14 @@ public class SearchActivity extends BaseActivity {
 		setContentView(R.layout.layout_search);
 		Bundle extras = getIntent().getExtras();
 		searchTerm = extras.getString("searchTerm");
-	}
 
-	@Override
-	protected void onStart() {
-		// TODO Auto-generated method stub
-		super.onStart();
 		searchlist = (ListView) findViewById(R.id.book_search_list);
-		Log.d("RST", "kelime:" + searchTerm); 
-		new SearchAsyncTask().execute(searchTerm);
+		if (searchTerm.length() > 3 &&  searchTerm.length() < 15 ){
+			new SearchAsyncTask().execute(searchTerm);
+		}else{
+			Intent intent = new Intent(this, MainActivity.class);
+			startActivity(intent);
+		}
 	}
 
 	private void searchListView(ArrayList<BookEntity> books) {

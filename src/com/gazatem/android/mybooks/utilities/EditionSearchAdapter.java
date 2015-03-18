@@ -50,7 +50,11 @@ public class EditionSearchAdapter extends ArrayAdapter<Edition> {
 		txtName.setText(entity.getTitle());
 		txtAuthor.setText(entity.getAuthor());
 		subTitle.setText(entity.getSubtitle()); 
-		imgBook.setImageBitmap(bookCover);
+		
+		if (bookCover != null){ 
+			imgBook.setImageBitmap(bookCover);
+		}
+		
 		return view;
 	}
 

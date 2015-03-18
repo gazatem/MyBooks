@@ -1,10 +1,8 @@
 package com.gazatem.android.mybooks.activities;
 
 import com.gazatem.android.mybooks.R;
-
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -26,14 +24,12 @@ public class MainActivity extends BaseActivity {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				Log.d("RST", "bASLAMADI");
 					EditText searchTerm = (EditText) findViewById(R.id.searchQuery);
 					Intent i = new Intent(MainActivity.this, SearchActivity.class); 
 					i.putExtra("searchTerm", searchTerm.getText().toString());
 					startActivity(i); 
 			}
 		});
-
 	}
 
 }

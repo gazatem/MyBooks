@@ -17,7 +17,7 @@ public class BookData {
 
 	Edition edition;
 	Context context;
-	DBHelper dbHelper;
+	DBHelper dbHelper; 
 
 	public BookData(Context context) {
 		this.context = context;

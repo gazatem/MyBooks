@@ -66,7 +66,8 @@ public class BookListActivity extends BaseActivity {
 					int position, long id) {
 				// TODO Auto-generated method stub
 				Intent i = new Intent(BookListActivity.this, BookActivity.class);
-				String edition_key = crs.getString(crs.getColumnIndex("edition_key"));
+				String edition_key = crs.getString(crs
+						.getColumnIndex("edition_key"));
 
 				i.putExtra("edition_key", edition_key);
 				startActivity(i);
@@ -81,8 +82,8 @@ public class BookListActivity extends BaseActivity {
 
 			if (columnIndex == cursor.getColumnIndex(DBHelper.COL_COVER)) {
 				String data = cursor.getString(columnIndex);
-			 
-				if (data != null) {
+
+				if (data.length() > 1) {
 					String coverUrl = "http://covers.openlibrary.org/b/id/"
 							+ data + "-S.jpg";
 					new DownloadBokCoverAsyncTask(view).execute(coverUrl);
@@ -95,7 +96,7 @@ public class BookListActivity extends BaseActivity {
 
 		}
 
-		class DownloadBokCoverAsyncTask extends AsyncTask<String, Void, Void> {
+		class DownloadBokCoverAsyncTask extends AsyncTask<String, Void, Bitmap> {
 
 			View view;
 
@@ -104,18 +105,28 @@ public class BookListActivity extends BaseActivity {
 			}
 
 			@Override
-			protected Void doInBackground(String... params) {
+			protected void onPostExecute(Bitmap result) {
 				// TODO Auto-generated method stub
+				super.onPostExecute(result);
+				if (result != null) {
+					((ImageView) view).setImageBitmap(result);
+				}else{
+					((ImageView) view).setImageDrawable(draw);
+				}
+				
+			}
 
+			@Override
+			protected Bitmap doInBackground(String... params) {
+				// TODO Auto-generated method stub
+				Bitmap coverImage = null;
 				try {
-					Bitmap coverImage = ImageDownloader
-							.getBitmapFromURL(params[0]);
-					((ImageView) view).setImageBitmap(coverImage);
+					coverImage = ImageDownloader.getBitmapFromURL(params[0]);
 				} catch (Exception e) {
-					Log.d("RST", "Can't download image: " + e.getMessage());
+					Log.d("RST", "My Books List : " + e.getMessage());
 				}
 
-				return null;
+				return coverImage;
 			}
 		}
 	}

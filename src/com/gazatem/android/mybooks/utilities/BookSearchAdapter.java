@@ -22,7 +22,7 @@ public class BookSearchAdapter extends ArrayAdapter<BookEntity> {
 
 	ArrayList<BookEntity> liste;
 	Context ctx;
-
+ 
 	public BookSearchAdapter(Context context, ArrayList<BookEntity> objects) {
 		super(context, android.R.layout.simple_list_item_1, objects);
 		// TODO Auto-generated constructor stub
