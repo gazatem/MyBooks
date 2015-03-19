@@ -1,12 +1,10 @@
 package com.gazatem.android.mybooks.data;
 
 import java.util.ArrayList;
-import java.util.concurrent.ExecutionException;
 
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
-import android.util.Log;
 
 import com.gazatem.android.mybooks.contracts.Author;
 import com.gazatem.android.mybooks.contracts.Edition;
@@ -15,25 +13,36 @@ import com.gazatem.android.mybooks.utilities.FetchData;
 
 public class BookData {
 
-	Edition edition;
 	Context context;
-	DBHelper dbHelper; 
+	DBHelper dbHelper;
 
 	public BookData(Context context) {
 		this.context = context;
 		dbHelper = new DBHelper(context);
 	}
 
-	public String getAuthors() {
+	public Edition getBook(String edition_key) {
+		Edition edition;
+		try {
+			edition = FetchData.searchByEditionKey(edition_key);
+			return edition;  
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	public String getAuthors(ArrayList<Author> editionAuthors) {
 		String authors = "";
-		for (int i = 0; i < edition.authors.size(); i++) {
+		for (int i = 0; i < editionAuthors.size(); i++) {
 			Author author;
-			String key = edition.authors.get(i).key;
-			key  = key.replace("/authors/", "");
-			 
+			String key = editionAuthors.get(i).key;
+			key = key.replace("/authors/", "");
+
 			try {
 				author = new FetchAuthorAsyncTask(context).execute(key).get();
-				authors += author.name + ", "; 
+				authors += author.name + ", ";
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -43,20 +52,8 @@ public class BookData {
 		return authors.substring(0, (authors.length() - 2));
 	}
 
-	public Edition getBook(String edition_key) {
-		try {
-			edition = new FetchEditionAsyncTask(context).execute(edition_key)
-					.get();
-			return edition;
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return null;
-	}
-
-	public boolean isSavedBook() {
-		return dbHelper.isSavedBook(edition.getKey());
+	public boolean isSavedBook(String editionKey) {
+		return dbHelper.isSavedBook(editionKey);
 	}
 
 	public Boolean saveBook2Library(String edition_key, String title,
@@ -73,13 +70,21 @@ public class BookData {
 	}
 
 	class FetchEditionAsyncTask extends AsyncTask<String, Void, Edition> {
-		Edition edition;
-		Context context;
+		private Edition edition;
+		private Context context;
 
-		// ProgressDialog prg = new ProgressDialog(context);
+		ProgressDialog prg;
 
-		public FetchEditionAsyncTask(Context context) {
-			this.context = context;
+		public FetchEditionAsyncTask(Context ctx) {
+			// context = ctx;
+			// prg = new ProgressDialog(context);
+		}
+
+		@Override
+		protected void onPostExecute(Edition result) {
+			// TODO Auto-generated method stub
+			super.onPostExecute(result);
+			// prg.dismiss();
 		}
 
 		@Override
@@ -107,18 +112,25 @@ public class BookData {
 	class FetchAuthorAsyncTask extends AsyncTask<String, Void, Author> {
 		Author author;
 		Context context;
+		ProgressDialog prg;
 
-		// ProgressDialog prg = new ProgressDialog(context);
+		@Override
+		protected void onPostExecute(Author result) {
+			// TODO Auto-generated method stub
+			super.onPostExecute(result);
+			// prg.dismiss();
+		}
 
-		public FetchAuthorAsyncTask(Context context) {
-			this.context = context;
+		public FetchAuthorAsyncTask(Context ctx) {
+			this.context = ctx;
+			// prg = new ProgressDialog(context);
 		}
 
 		@Override
 		protected void onPreExecute() {
 			// TODO Auto-generated method stub
 			super.onPreExecute();
-			// prg.setTitle("Getting information of book!");
+			// prg.setTitle("Getting Author of book!");
 			// prg.show();
 		}
 

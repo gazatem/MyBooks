@@ -1,10 +1,12 @@
 package com.gazatem.android.mybooks.activities; 
 import com.gazatem.android.mybooks.R;
-import com.gazatem.android.mybooks.application.MyBooksApplication;
-import android.app.Activity; 
+import com.gazatem.android.mybooks.application.MyBooksApplication; 
+ 
+import android.app.Activity;   
 import android.content.Intent;
-import android.view.Menu; 
+import android.view.Menu;  
 import android.view.MenuItem;
+
 
 public class BaseActivity extends Activity {
 	final MyBooksApplication app = ((MyBooksApplication) getApplication());
@@ -27,7 +29,7 @@ public class BaseActivity extends Activity {
 			Intent i = new Intent(BaseActivity.this, BookListActivity.class);
 			startActivity(i);
 		} else {
-
+ 
 		}
 
 		return super.onOptionsItemSelected(item);

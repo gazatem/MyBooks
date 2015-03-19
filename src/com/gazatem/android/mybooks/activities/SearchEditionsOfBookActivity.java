@@ -2,7 +2,6 @@ package com.gazatem.android.mybooks.activities;
 
 import java.io.IOException;
 import java.util.ArrayList;
-
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -16,7 +15,6 @@ import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 
 import com.gazatem.android.mybooks.R;
@@ -33,12 +31,12 @@ public class SearchEditionsOfBookActivity extends BaseActivity {
 	String cover_id;
 	String author_names;
 	ListView searchlist;
-	
+
 	ArrayList<Edition> editions = new ArrayList<Edition>();
 	Bitmap coverImage;
 	private ImageDownloader mDownloader;
 
-	@Override 
+	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
@@ -59,7 +57,7 @@ public class SearchEditionsOfBookActivity extends BaseActivity {
 		authorNames.setText(author_names);
 		ImageView bookCover = (ImageView) findViewById(R.id.bookCover);
 		searchlist = (ListView) findViewById(R.id.book_search_list);
-
+		
 		searchlist.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
@@ -70,9 +68,10 @@ public class SearchEditionsOfBookActivity extends BaseActivity {
 						BookActivity.class);
 				Edition entity = editions.get(position);
 
-				i.putExtra("edition_key", entity.getKey().replace("/books/", ""));
+				i.putExtra("edition_key", entity.getKey()
+						.replace("/books/", ""));
 				startActivity(i);
-			} 
+			}
 		});
 
 		if (cover_id != null) {
@@ -89,7 +88,7 @@ public class SearchEditionsOfBookActivity extends BaseActivity {
 								coverImage = bmp;
 							}
 						}
-					});
+					});   
 			mDownloader.execute();
 		}
 
@@ -98,7 +97,8 @@ public class SearchEditionsOfBookActivity extends BaseActivity {
 
 	class SearchAsyncTask extends AsyncTask<String, Void, Boolean> {
 
-		ProgressDialog prg = new ProgressDialog(SearchEditionsOfBookActivity.this);
+		ProgressDialog prg = new ProgressDialog( 
+				SearchEditionsOfBookActivity.this);
 
 		@Override
 		protected void onPreExecute() {
@@ -107,29 +107,30 @@ public class SearchEditionsOfBookActivity extends BaseActivity {
 
 			prg.setTitle("Searching editions of selected book!");
 			prg.show();
-		}
+		}   
    
-		@Override 
+		@Override
 		protected void onPostExecute(Boolean result) {
 			// TODO Auto-generated method stub
 			super.onPostExecute(result);
 			searchlist.setAdapter(new EditionSearchAdapter(
-					SearchEditionsOfBookActivity.this, editions, coverImage));
+					SearchEditionsOfBookActivity.this, editions, coverImage)); 
 			prg.dismiss();
 		}
 
 		@Override
 		protected Boolean doInBackground(String... editionKeys) {
 			// TODO Auto-generated method stub
-
+			
 			for (String item : editionKeys) {
 				try {
+					Log.d("RST", "Eee "+ item);
 					editions.add(FetchData.searchByEditionKey(item));
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					Log.d("RST", "Edition of book can not accessed : " + item);
 				}
-			} 
+			}
 			return true;
 		}
 	}

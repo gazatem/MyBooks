@@ -2,50 +2,89 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" 
     android:background="@color/white"
-    >
+    android:orientation="vertical" >
 
-    <TextView
-        android:id="@+id/bookTitle"
+    <LinearLayout
+        android:id="@+id/thumbnail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerInParent="true"
-        android:layout_marginTop="8dp"
-        android:gravity="center_vertical"
-        android:text="title"
-        android:textSize="22sp"
-        android:textStyle="bold" />
+        android:layout_alignParentLeft="true"
+        android:layout_marginRight="5dip"
+        android:padding="5dip" >
 
-    <TextView
-        android:id="@+id/authorNames"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/bookTitle"
-        android:layout_centerHorizontal="true"
-        android:gravity="center_vertical"
-        android:paddingTop="5dp"
-        android:text="yazar"
-        android:textSize="18sp" />
+        <ImageView
+            android:id="@+id/bookCover"
+            android:layout_width="45dp"
+            android:layout_height="65dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/book" />
+    </LinearLayout>
 
-    <ImageView
-        android:id="@+id/bookCover"
-        android:layout_width="wrap_content"
-        android:layout_height="85dp"
-        android:layout_below="@+id/authorNames"
-        android:layout_centerHorizontal="true"
-        android:paddingTop="5dp"
-        android:scaleType="fitXY"
-        android:src="@drawable/book" />
-
-    <ListView
-        android:id="@+id/book_search_list"
+    <LinearLayout
+        android:id="@+id/infocell"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/bookCover"
-        android:layout_margin="5dp"
-        android:background="#9FFF" >
-    </ListView>
+        android:layout_alignTop="@+id/thumbnail"
+        android:layout_marginBottom="6dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="8dp"
+        android:layout_toRightOf="@+id/thumbnail"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/pagetitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:text="@string/editions"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/bookTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/book_name"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/authorNames"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#666"
+            android:textSize="13sp" />
+
+        <TextView
+            android:id="@+id/subTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#666"
+            android:textSize="13sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/link2gz"
+        android:layout_below="@+id/infocell"
+        android:orientation="horizontal" >
+
+        <ListView
+            android:id="@+id/book_search_list"
+            android:layout_width="match_parent"
+            android:layout_height="fill_parent"
+            android:layout_margin="5dp"
+            android:background="#9FFF" >
+        </ListView>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/link2gz"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:gravity="center_horizontal"
+        android:text="@string/copyright"
+        android:textSize="12sp" />
 
 </RelativeLayout>

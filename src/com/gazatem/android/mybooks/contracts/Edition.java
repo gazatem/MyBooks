@@ -12,7 +12,9 @@ public class Edition {
 	public Boolean isSaved;
 	private String[] covers;
 	public ArrayList<Author> authors;
-
+	private String publish_date;
+ 
+	
 	public String getTitle() {
 		return title;
 	}
@@ -58,6 +60,14 @@ public class Edition {
 
 	public void setCovers(String[] covers) {
 		this.covers = covers;
+	}
+
+	public String getPublishDate() {
+		return publish_date;
+	}
+
+	public void setPublishDate(String publish_date) {
+		this.publish_date = publish_date;
 	}
 
 }

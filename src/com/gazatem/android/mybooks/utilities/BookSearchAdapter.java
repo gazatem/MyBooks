@@ -1,10 +1,9 @@
 package com.gazatem.android.mybooks.utilities;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import com.gazatem.android.mybooks.R;
-import com.gazatem.android.mybooks.activities.SearchActivity;
+
 import com.gazatem.android.mybooks.contracts.BookEntity;
 
 import android.content.Context;

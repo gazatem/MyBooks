@@ -2,7 +2,9 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:orientation="vertical"
+    android:background="@color/white"
+     >
 
     <TextView
         android:id="@+id/bookTitle"
@@ -23,48 +25,78 @@
         android:layout_marginTop="21dp"
         android:gravity="center_vertical"
         android:paddingTop="20dp"
-        
-        android:textSize="18sp"
+        android:textSize="16sp"
         android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/publish_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/authorNames"
+        android:layout_centerHorizontal="true"
+        android:paddingTop="10dp"
+        android:textSize="13sp" />
+
+    <TextView
+        android:id="@+id/subtitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/publish_date"
+        android:layout_centerHorizontal="true"
+        android:paddingTop="10dp"
+        android:textSize="11sp" />
 
     <ImageView
         android:id="@+id/bookCover"
-        
-        android:layout_alignParentBottom="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="77dp"
+        android:paddingBottom="30dp"
+        android:layout_below="@+id/subtitle"
         android:contentDescription="@string/book_cover"
-        android:scaleType="fitXY"
+        
         android:src="@drawable/book" />
 
     <LinearLayout
+        android:paddingBottom="15dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
+         android:layout_above="@+id/link2gz"
         android:orientation="horizontal" >
 
         <Button
-            android:layout_weight="1"
             android:id="@+id/removeFromLibrary"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/remove_book" />
-        
-        <Button
             android:layout_weight="1"
+            android:text="@string/remove_book" />
+
+        <Button
             android:id="@+id/save2Library"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/save_book" />        
+            android:layout_weight="1"
+            android:text="@string/save_book" />
 
         <Button
-            android:layout_weight="1"
             android:id="@+id/shareBook"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:text="@string/share_book" />
     </LinearLayout>
+    
+    
+        <TextView
+            android:id="@+id/link2gz"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="14dp"
+            android:gravity="center_horizontal"
+            android:text="@string/copyright"
+            android:textSize="12sp" />    
 
 </RelativeLayout>

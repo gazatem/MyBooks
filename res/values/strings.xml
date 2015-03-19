@@ -24,4 +24,10 @@
 
     <string name="share_book">Share Book</string>
 
+    <string name="enter_title_of_a_book">Enter title of a book</string>
+
+    <string name="copyright">(c) 2015 - www.gazatem.com </string>
+
+    <string name="editions">Select An Edition of Book</string>
+
 </resources>

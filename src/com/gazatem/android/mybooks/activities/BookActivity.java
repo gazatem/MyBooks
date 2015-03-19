@@ -1,14 +1,17 @@
 package com.gazatem.android.mybooks.activities;
- 
+
 
 import com.gazatem.android.mybooks.R;
 import com.gazatem.android.mybooks.contracts.Edition;
 import com.gazatem.android.mybooks.data.BookData;
 import com.gazatem.android.mybooks.utilities.ImageDownloader;
 
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
+
 import android.graphics.Bitmap;
+import android.os.AsyncTask;
 import android.os.Bundle;
 
 import android.view.View;
@@ -20,7 +23,6 @@ import android.widget.Toast;
 
 public class BookActivity extends BaseActivity {
 
-	Cursor crs;
 	static Bitmap coverImage;
 	private ImageDownloader mDownloader;
 	Button removeBtn;
@@ -32,8 +34,10 @@ public class BookActivity extends BaseActivity {
 	String bookCoverId;
 	Button save2LibraryBtn;
 
+	TextView subtitle;
 	TextView bookTitle;
 	TextView authorNames;
+	TextView publishDate;
 	ImageView bookCover;
 	BookData data;
 	Edition edition;
@@ -46,8 +50,13 @@ public class BookActivity extends BaseActivity {
 		shareBtn = (Button) findViewById(R.id.shareBook);
 		removeBtn = (Button) findViewById(R.id.removeFromLibrary);
 		save2LibraryBtn = (Button) findViewById(R.id.save2Library);
+		
+		save2LibraryBtn.setVisibility(View.GONE);
+		removeBtn.setVisibility(View.GONE);
+		
+		
 		Bundle extras = getIntent().getExtras();
-
+		
 		if (extras != null) {
 			edition_key = extras.getString("edition_key");
 		}
@@ -55,39 +64,87 @@ public class BookActivity extends BaseActivity {
 		bookTitle = (TextView) findViewById(R.id.bookTitle);
 		authorNames = (TextView) findViewById(R.id.authorNames);
 		bookCover = (ImageView) findViewById(R.id.bookCover);
+		publishDate = (TextView) findViewById(R.id.publish_date);
+		subtitle = (TextView) findViewById(R.id.subtitle);
+	}
 
-		data = new BookData(BookActivity.this);
-		edition = data.getBook(edition_key);
-		String author = data.getAuthors();
-		authorNames.setText(author);
-		boolean isSaved = data.isSavedBook();
+	@Override
+	protected void onStart() {
+		// TODO Auto-generated method stub
+		super.onStart();
+		new FillData(this).execute();
+		buttons();
+	}
 
-		if (isSaved == true) {
-			save2LibraryBtn.setVisibility(View.GONE);
-		} else {
-			removeBtn.setVisibility(View.GONE);
+	class FillData extends AsyncTask<String, Void, Edition> {
+		private Context context;
+		ProgressDialog prg;
+		boolean isSaved;
+
+		public FillData(Context ctx) {
+			// TODO Auto-generated constructor stub
+			this.context = ctx;
+			prg = new ProgressDialog(this.context);
 		}
 
-		bookTitle.setText(edition.getTitle());
-		bookCoverId = edition.getCover();
-
-		if (!bookCoverId.equals("")) {
-			imageUrl = "http://covers.openlibrary.org/b/id/" + bookCoverId
-					+ "-M.jpg";
-
-			mDownloader = new ImageDownloader(imageUrl, bookCover, coverImage,
-					new ImageDownloader.ImageLoaderListener() {
-
-						@Override
-						public void onImageDownloaded(Bitmap bmp) {
-							// TODO Auto-generated method stub
-							BookActivity.coverImage = bmp;
-						}
-					});
-
-			mDownloader.execute();
+		@Override
+		protected void onPreExecute() {
+			// TODO Auto-generated method stub
+			super.onPreExecute();
+			prg.setTitle("Getting information of book!");
+			prg.show();
 		}
 
+		@Override
+		protected void onPostExecute(Edition edition) {
+			// TODO Auto-generated method stub
+			super.onPostExecute(edition);
+			bookTitle.setText(edition.getTitle());
+			publishDate.setText(edition.getPublishDate());
+			subtitle.setText(edition.getSubtitle());
+			String author = data.getAuthors(edition.authors);
+			authorNames.setText(author);
+
+			if (isSaved == true) {
+				removeBtn.setVisibility(View.VISIBLE);
+			} else {
+				save2LibraryBtn.setVisibility(View.VISIBLE);
+			}
+
+			bookCoverId = edition.getCover();
+
+			if (!bookCoverId.equals("")) {
+				imageUrl = "http://covers.openlibrary.org/b/id/" + bookCoverId
+						+ "-M.jpg";
+
+				mDownloader = new ImageDownloader(imageUrl, bookCover,
+						coverImage, new ImageDownloader.ImageLoaderListener() {
+
+							@Override
+							public void onImageDownloaded(Bitmap bmp) {
+								// TODO Auto-generated method stub
+								BookActivity.coverImage = bmp;
+							}
+						});
+
+				mDownloader.execute();
+			}
+
+			prg.dismiss();
+		}
+
+		@Override
+		protected Edition doInBackground(String... params) {
+			// TODO Auto-generated method stub
+			data = new BookData(this.context);
+			edition = data.getBook(edition_key);
+			isSaved = data.isSavedBook(edition.getKey());
+			return edition;
+		}
+
+	}
+
+	private void buttons() {
 		save2LibraryBtn.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -153,7 +210,6 @@ public class BookActivity extends BaseActivity {
 				}
 			}
 		});
-
 	}
 
 }
