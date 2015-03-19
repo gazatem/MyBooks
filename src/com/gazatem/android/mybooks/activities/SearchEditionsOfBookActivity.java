@@ -87,18 +87,16 @@ public class SearchEditionsOfBookActivity extends BaseActivity {
 							if (bmp != null) {
 								coverImage = bmp;
 							}
-						}
+						} 
 					});   
-			mDownloader.execute();
+			mDownloader.execute(); 
 		}
-
 		new SearchAsyncTask().execute(editionKeys);
-	}
-
+	} 
 	class SearchAsyncTask extends AsyncTask<String, Void, Boolean> {
 
 		ProgressDialog prg = new ProgressDialog( 
-				SearchEditionsOfBookActivity.this);
+				SearchEditionsOfBookActivity.this);  
 
 		@Override
 		protected void onPreExecute() {

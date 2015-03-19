@@ -5,13 +5,25 @@
     android:background="@color/white"
     android:orientation="vertical" >
 
+    <TextView
+        android:id="@+id/pagetitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:gravity="center_horizontal"
+        android:text="@string/editions"
+        android:textSize="18sp" 
+        android:paddingTop="10dp" 
+        android:paddingBottom="15dp" />
+
     <LinearLayout
         android:id="@+id/thumbnail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
         android:layout_alignParentLeft="true"
-        android:layout_marginRight="5dip"
-        android:padding="5dip" >
+        android:layout_marginRight="5dp"
+        android:padding="5dp" >
 
         <ImageView
             android:id="@+id/bookCover"
@@ -28,17 +40,8 @@
         android:layout_alignTop="@+id/thumbnail"
         android:layout_marginBottom="6dp"
         android:layout_marginLeft="10dp"
-        android:layout_marginTop="8dp"
         android:layout_toRightOf="@+id/thumbnail"
         android:orientation="vertical" >
-
-        <TextView
-            android:id="@+id/pagetitle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:text="@string/editions"
-            android:textSize="12sp" />
 
         <TextView
             android:id="@+id/bookTitle"
@@ -63,6 +66,7 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@+id/link2gz"
@@ -72,10 +76,9 @@
         <ListView
             android:id="@+id/book_search_list"
             android:layout_width="match_parent"
-            android:layout_height="fill_parent"
-            android:layout_margin="5dp"
-            android:background="#9FFF" >
-        </ListView>
+            android:layout_height="fill_parent" 
+            android:layout_margin="8dp"
+            />
     </LinearLayout>
 
     <TextView
